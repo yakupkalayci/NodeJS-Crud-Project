@@ -1,0 +1,23 @@
+{
+  "name": "pcat",
+  "version": "1.0.0",
+  "description": "Photo show,  upload, edit and delete app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yakupkalayci/NodeJS-Crud-Project.git"
+  },
+  "keywords": [
+    "photo",
+    "camera"
+  ],
+  "author": "Yakup Kalaycı",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yakupkalayci/NodeJS-Crud-Project/issues"
+  },
+  "homepage": "https://github.com/yakupkalayci/NodeJS-Crud-Project#readme"
+}
