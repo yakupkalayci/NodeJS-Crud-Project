@@ -25,6 +25,13 @@ app.get("/", async (req, res) => {
     });
 });
 
+app.get("/photos/:id", async (req, res) => {
+    const Photo = await photo.findById(req.params.id);
+    res.render("photo", {
+        Photo
+    })
+});
+
 app.get("/about", (req, res) => {
     res.render("about");
 });
