@@ -4,8 +4,8 @@ const fileUpload = require("express-fileupload");
 const methodOverride = require("method-override");
 const ejs = require("ejs");
 const path = require("path");
-const fs = require("fs");
-const photo = require("./models/Photo");
+const photoController = require("./controllers/photoControllers"); 
+const pageController = require("./controllers/pageControllers");
 
 const app = express();
 
@@ -25,73 +25,15 @@ app.use(methodOverride("_method", {
 app.set("view engine", "ejs");
 
 //ROUTES
-app.get("/", async (req, res) => {
-    const photos = await photo.find({}).sort("-dateCreated");
-    res.render("index", {
-        photos
-    });
-});
+app.get("/", photoController.getAllPhotos);
+app.get("/photos/:id", photoController.getPhoto);
+app.post("/post", photoController.createPhoto);
+app.put("/photos/:id", photoController.updatePhoto);
+app.delete("/photos/:id", photoController.deletePhoto);
+app.get("/photos/edit/:id", pageController.getEditPage);
+app.get("/about", pageController.getAboutPage);
+app.get("/add", pageController.getAddPage);
 
-app.get("/photos/:id", async (req, res) => {
-    const Photo = await photo.findById(req.params.id);
-    res.render("photo", {
-        Photo
-    })
-});
-
-app.get("/photos/edit/:id", async (req, res) => {
-    const Photo = await photo.findById(req.params.id);
-    res.render("edit", {
-        Photo
-    });
-});
-
-app.get("/about", (req, res) => {
-    res.render("about");
-});
-
-app.get("/add", (req, res) => {
-    res.render("add");
-});
-
-app.post("/post", async (req, res) => {
-
-    const uploadDir = "public/uploads";
-    if(!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir);
-    } 
-
-    let uploadedImage = req.files.photo;
-    let uploadPath = __dirname + "/public/uploads/" + uploadedImage.name;
-
-    uploadedImage.mv(uploadPath, async() => {
-        await photo.create({
-            ...req.body,
-            image: "/uploads/" + uploadedImage.name
-        });
-        res.redirect("/");
-    });
-});
-
-app.put("/photos/:id", async(req, res) => {
-    const Photo = await photo.findById(req.params.id);
-    Photo.title = req.body.title;
-    Photo.description = req.body.description;
-    Photo.save();
-
-    res.redirect(`/photos/${req.params.id}`);
-});
-
-app.delete("/photos/:id", async (req, res) => {
-    const Photo = await photo.findOne({_id: req.params.id});
-    let deletedImage = __dirname + "/public/" + Photo.image;
-    fs.unlinkSync(deletedImage);
-
-    await photo.findByIdAndRemove(req.params.id);
-    res.redirect("/")
-
-
-});
 
 const port = 3000;
 
