@@ -17,7 +17,9 @@ app.use(express.static("public"));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(fileUpload());
-app.use(methodOverride("_method"));
+app.use(methodOverride("_method", {
+    methods: ["POST", "GET"]
+}));
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");
@@ -78,6 +80,17 @@ app.put("/photos/:id", async(req, res) => {
     Photo.save();
 
     res.redirect(`/photos/${req.params.id}`);
+});
+
+app.delete("/photos/:id", async (req, res) => {
+    const Photo = await photo.findOne({_id: req.params.id});
+    let deletedImage = __dirname + "/public/" + Photo.image;
+    fs.unlinkSync(deletedImage);
+
+    await photo.findByIdAndRemove(req.params.id);
+    res.redirect("/")
+
+
 });
 
 const port = 3000;
