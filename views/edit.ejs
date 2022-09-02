@@ -32,7 +32,7 @@
                     <div class="mx-auto pb-3 tm-about-text-container px-3">
                         <div class="row">
                             <div class="offset-1 col-lg-10 mb-5">
-                                <form method="POST" action="/post" class="tm-contact-form" enctype="multipart/form-data">
+                                <form method="POST" action="/photos/<%=Photo.id %>/?_method=PUT" class="tm-contact-form" enctype="multipart/form-data">
                                   <div class="form-group">
                                     <input type="text" name="title" class="form-control rounded-0" placeholder="Photo Title" value="<%= Photo.title %> " required/>
                                   </div>
