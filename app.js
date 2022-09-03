@@ -10,7 +10,9 @@ const pageController = require("./controllers/pageControllers");
 const app = express();
 
 // Connect DB
-mongoose.connect("mongodb://localhost:/pcatDB");
+mongoose.connect(`mongodb+srv://yakup:gJZ8akYCvmVb6WaB@cluster0.vgg0plu.mongodb.net/?retryWrites=true&w=majority`)
+    .then(() => console.log("DB connected!"))
+    .catch((err) => console.log(err));
 
 //MIDLEWARES
 app.use(express.static("public"));
@@ -35,6 +37,6 @@ app.get("/about", pageController.getAboutPage);
 app.get("/add", pageController.getAddPage);
 
 
-const port = 3000;
+const port = process.env.Port || 5000;
 
 app.listen(port, () => console.log(`Sunucu ${port} portunda çalıştı.`));
